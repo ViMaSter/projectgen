@@ -9,6 +9,10 @@ namespace projectgen
     /// </summary>
     class ApplicationHelper
     {
+
+        /// <summary>
+        /// All currently avaialable "graceful" exit states
+        /// </summary>
         public enum ExitStates
         {
             CLEAN,
@@ -17,8 +21,18 @@ namespace projectgen
             INVALID_BARE_PATH
         }
 
+
+        /// <summary>
+        /// Last state the application was in
+        /// </summary>
         public static ExitStates LastState;
 
+
+        /// <summary>
+        /// Initiate a graceful shutdown with the state provided
+        /// </summary>
+        /// <param name="state">ExitState to use</param>
+        /// <returns>Returns the ExitState supplied in the first parameter</returns>
         public static ExitStates ExitWithState(ExitStates state)
         {
             LastState = state;
@@ -28,7 +42,13 @@ namespace projectgen
             return LastState;
         }
 
-        // Based of https://msdn.microsoft.com/en-us/library/bb762914.aspx
+
+        /// <summary>
+        /// Helper function to recursively copy a directory and all its files
+        /// </summary>
+        /// <param name="source">Path to source folder</param>
+        /// <param name="destination">Path to destination folder.</param>
+        /// <exception cref="DirectoryNotFoundException">Source directory does not exist or could not be found:  + source</exception>
         public static void DirectoryCopy(string source, string destination) {
             // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new DirectoryInfo(source);

@@ -8,11 +8,17 @@ using Newtonsoft.Json;
 
 namespace projectgen.Projects
 {
+    #region Raw JSON container
     struct ProjectJSON
     {
         public string name;
         public char mnemonic;
     }
+    #endregion
+
+    /// <summary>
+    /// A project is a set of components, that can be copied
+    /// </summary>
     class Project : IHasPath
     {
 #region IHasPath implementation
@@ -22,11 +28,32 @@ namespace projectgen.Projects
         }
 #endregion
 
+        /// <summary>
+        /// Name of the folder in the project-root that contains this component
+        /// </summary>
         public string FolderName;
+
+        /// <summary>
+        /// Nicer display name of this component
+        /// 
+        /// Can be set via the description.json-file
+        /// </summary>
         public string DisplayName;
+
+        /// <summary>
+        /// Mnemonic that allows for easier selection using the console window
+        /// </summary>
         public char Mnemonic;
 
+
+        /// <summary>
+        /// List of all possible components
+        /// </summary>
         public List<Component> Components;
+
+        /// <summary>
+        /// List of index of Components-enties currently selected for copying
+        /// </summary>
         public List<int> ActiveComponents;
 
         public Project(string folderName)
@@ -54,6 +81,9 @@ namespace projectgen.Projects
             }
         }
 
+        /// <summary>
+        /// Clears every ReplacementRule of this object
+        /// </summary>
         public void Clear()
         {
             foreach (Component component in Components)
@@ -65,6 +95,10 @@ namespace projectgen.Projects
             }
         }
 
+        /// <summary>
+        /// Starts a copy of the project to the specified file location
+        /// </summary>
+        /// <param name="targetLocation">Path to the destination folder</param>
         public void Copy(string targetLocation)
         {
             foreach (int index in ActiveComponents)

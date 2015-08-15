@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 namespace projectgen.Projects
 {
+    #region Raw JSON container
     class ReplaceJSON
     {
         public string file;
@@ -21,7 +22,11 @@ namespace projectgen.Projects
         public string name;
         public List<FieldJSON> fields;
     }
+    #endregion
 
+    /// <summary>
+    /// A component is a part of a project that can be selected for copying
+    /// </summary>
     class Component : IHasPath
     {
 #region IHasPath implementation
@@ -31,14 +36,34 @@ namespace projectgen.Projects
         }
 #endregion
 
-        // Required to build absolute paths
+
+        /// <summary>
+        /// The associated project
+        /// 
+        /// Required to build absolute paths
+        /// </summary>
         public Project AssociatedProject;
 
+
+        /// <summary>
+        /// Name of the folder in the project-root that contains this component
+        /// </summary>
         public string FolderName;
+
+        /// <summary>
+        /// Nicer display name of this component
+        /// 
+        /// Can be set via the description.json-file
+        /// </summary>
         public string DisplayName;
 
-        // Key: Visual name
-        // Value: List of replacement rules
+
+        /// <summary>
+        /// A set of replacement rules
+        /// 
+        /// Key: Display name of the variable that's being replaced
+        /// Value: Link to a ReplacementRule-object
+        /// </summary>
         public Dictionary<string, ReplacementRule> ReplacementRules;
 
         public Component(Project associatedProject, string folderName)
