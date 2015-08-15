@@ -319,17 +319,17 @@ namespace projectgen
                                 break;
                         }
                     }
-                    ApplicationHelper.ExitWithState(ApplicationHelper.States.CLEAN);
+                    ApplicationHelper.ExitWithState(ApplicationHelper.ExitStates.CLEAN);
                 }
                 else
                 {
-                    ApplicationHelper.ExitWithState(ApplicationHelper.States.INVALID_BARE_PATH);
+                    ApplicationHelper.ExitWithState(ApplicationHelper.ExitStates.INVALID_BARE_PATH);
                     return;
                 }
             }
             else
             {
-                ApplicationHelper.ExitWithState(ApplicationHelper.States.NO_BARE_PATH);
+                ApplicationHelper.ExitWithState(ApplicationHelper.ExitStates.NO_BARE_PATH);
                 return;
             }
         }

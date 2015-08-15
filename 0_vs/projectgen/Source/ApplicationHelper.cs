@@ -3,9 +3,13 @@ using System.Diagnostics;
 
 namespace projectgen
 {
+
+    /// <summary>
+    /// General application helper functions (graceful exists, file operations)
+    /// </summary>
     class ApplicationHelper
     {
-        public enum States
+        public enum ExitStates
         {
             CLEAN,
 
@@ -13,9 +17,9 @@ namespace projectgen
             INVALID_BARE_PATH
         }
 
-        public static States LastState;
+        public static ExitStates LastState;
 
-        public static States ExitWithState(States state)
+        public static ExitStates ExitWithState(ExitStates state)
         {
             LastState = state;
             Debug.WriteLine("");
