@@ -4,10 +4,30 @@ using System.IO;
 
 namespace projectgen
 {
+
+    /// <summary>
+    /// Container for globally used variables
+    /// 
+    /// Run Init() with the path to the folder containing
+    /// the setups supplied by this tool
+    /// </summary>
     class ProgramData
     {
+
+        /// <summary>
+        /// Root folder of all "bare projects" that are served
+        /// </summary>
         public static string BareProjectRoot;
+
+        /// <summary>
+        /// Target location when copying a project
+        /// </summary>
         public static string TargetLocation = "";
+
+
+        /// <summary>
+        /// List of all successfully parsed projects
+        /// </summary>
         public static List<Projects.Project> ProjectList;
 
         public static void Init(string bareProjectRoot)
@@ -22,8 +42,29 @@ namespace projectgen
         }
     }
 
+
+    /// <summary>
+    /// Class that manages the console interface (view)
+    /// </summary>
     class ProgramInterface
     {
+        /// <summary>
+        /// Current project selected to be copied
+        /// </summary>
+        public static Projects.Project CurrentProject;
+
+        #region Interface states
+        /// <summary>
+        /// Each state has an associated function that is called,
+        /// until another state is set here
+        /// 
+        /// Also used to gracefully terminate the program (ProgramInterface.Exit)
+        /// </summary>
+        public static State NextState = State.None;
+
+        /// <summary>
+        /// Possible states the interface can be in
+        /// </summary>
         public enum State {
             None,
             MainMenu,
@@ -34,8 +75,6 @@ namespace projectgen
 
             Exit
         }
-        public static State NextState = State.None;
-        public static Projects.Project CurrentProject;
 
         public static void MainMenu()
         {
@@ -190,6 +229,7 @@ namespace projectgen
             // start copying
             NextState = State.CopyProject;
         }
+
         public static void CopyProject()
         {
             Console.Clear();
@@ -233,10 +273,23 @@ namespace projectgen
             Console.ReadLine();
             NextState = State.MainMenu;
         }
+        #endregion
     }
 
+
+    /// <summary>
+    /// Class for main entry point
+    /// </summary>
     class Program
     {
+
+        /// <summary>
+        /// Main entry point
+        /// </summary>
+        /// <param name="args">Command line arguments
+        /// 
+        /// Only the first one is used: Absolute path to the root-directory of bare projects
+        /// </param>
         static void Main(string[] args)
         {
             if (args.Length >= 1)
