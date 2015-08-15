@@ -71,6 +71,7 @@ namespace projectgen.Projects
             {
                 string tempPath = targetLocation + Components[index].FolderName + "/";
                 ApplicationHelper.DirectoryCopy(Components[index].GetAbsolutePath(), tempPath);
+                File.Delete(tempPath + "description.json");
                 foreach (ReplacementRule rule in Components[index].ReplacementRules.Values)
                 {
                     foreach (ReplacementLocation location in rule.ReplacementLocations)
