@@ -20,10 +20,18 @@ namespace projectgen
         public static string BareProjectRoot;
 
         /// <summary>
+        /// Command line argument number 2 can be a target location.
+        /// The path will be saved here.
+        /// 
+        /// If this variable is "", the tool will ask for a target
+        /// location before initiating the copy
+        /// </summary>
+        public static string SuppliedTargetLocation = "";
+
+        /// <summary>
         /// Target location when copying a project
         /// </summary>
         public static string TargetLocation = "";
-
 
         /// <summary>
         /// List of all successfully parsed projects
@@ -82,6 +90,19 @@ namespace projectgen
             Console.WriteLine("Available options:");
             Console.WriteLine("1: Create project");
             Console.WriteLine("");
+            if (ProgramData.SuppliedTargetLocation != "")
+            {
+                Console.WriteLine("c: Clear target location");
+                Console.Write("   Currently set to: ");
+                Console.Write(ProgramData.SuppliedTargetLocation);
+                Console.WriteLine("");
+            }
+            else
+            {
+                Console.WriteLine("");
+                Console.WriteLine("");
+            }
+            Console.WriteLine("");
             Console.WriteLine("←: Exit");
 
             while (!Console.KeyAvailable) { }
@@ -89,6 +110,9 @@ namespace projectgen
 
             switch (keyInfo.Key)
             {
+                case System.ConsoleKey.C:
+                    ProgramData.SuppliedTargetLocation = "";
+                    break;
                 case System.ConsoleKey.D1:
                     NextState = State.ProjectSelector;
                     break;
@@ -233,17 +257,26 @@ namespace projectgen
         public static void CopyProject()
         {
             Console.Clear();
-            Console.WriteLine("Absolute target path (WITH trailing slash):");
-            ProgramData.TargetLocation = Console.ReadLine();
-            if (ProgramData.TargetLocation == "")
-            {
-                NextState = State.ReplacementFiller;
-                return;
-            }
 
-            if (!Path.IsPathRooted(ProgramData.TargetLocation))
+            // Immediately start, if we supplied a target location as second parameter
+            if (ProgramData.SuppliedTargetLocation != "")
             {
-                return;
+                ProgramData.TargetLocation = ProgramData.SuppliedTargetLocation;
+            }
+            else
+            {
+                Console.WriteLine("Absolute target path (WITH trailing slash):");
+                ProgramData.TargetLocation = Console.ReadLine();
+                if (ProgramData.TargetLocation == "")
+                {
+                    NextState = State.ComponentSelector;
+                    return;
+                }
+
+                if (!Path.IsPathRooted(ProgramData.TargetLocation))
+                {
+                    return;
+                }
             }
 
             Console.Clear();
@@ -294,6 +327,14 @@ namespace projectgen
         {
             if (args.Length >= 1)
             {
+                if (args.Length >= 2)
+                {
+                    if (Path.IsPathRooted(args[1]))
+                    {
+                        ProgramData.SuppliedTargetLocation = args[1];
+                    }
+                }
+
                 if (Directory.Exists(args[0])) {
                     ProgramData.Init(args[0]);
                     ProgramInterface.NextState = ProgramInterface.State.MainMenu;
