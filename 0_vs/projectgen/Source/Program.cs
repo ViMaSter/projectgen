@@ -34,6 +34,12 @@ namespace projectgen
         public static string TargetLocation = "";
 
         /// <summary>
+        /// If this is set to true, the tool exits after finishing
+        /// the first copy
+        /// </summary>
+        public static bool RunOnce = false;
+
+        /// <summary>
         /// List of all successfully parsed projects
         /// </summary>
         public static List<Projects.Project> ProjectList;
@@ -302,9 +308,16 @@ namespace projectgen
             CurrentProject.Copy(ProgramData.TargetLocation);
 
             Console.WriteLine("");
-            Console.WriteLine("Success! Press any key!");
-            Console.ReadLine();
-            NextState = State.MainMenu;
+            if (!ProgramData.RunOnce)
+            {
+                Console.WriteLine("Success! Press any key!");
+                Console.ReadLine();
+                NextState = State.MainMenu;
+            }
+            else
+            {
+                NextState = State.Exit;
+            }
         }
         #endregion
     }
@@ -329,6 +342,11 @@ namespace projectgen
             {
                 if (args.Length >= 2)
                 {
+                    if (args.Length >= 3)
+                    {
+                        ProgramData.RunOnce = args[2] == "1";
+                    }
+
                     if (Path.IsPathRooted(args[1]))
                     {
                         ProgramData.SuppliedTargetLocation = args[1];
