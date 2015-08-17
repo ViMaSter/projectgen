@@ -116,9 +116,9 @@ namespace projectgen.Projects
                         }
                         else
                         {
-                            string text = File.ReadAllText(Components[index].GetAbsolutePath() + location.File);
+                            string text = File.ReadAllText(tempPath + location.File);
                             text = text.Replace(location.Wildcard, rule.ReplaceWith);
-                            File.WriteAllText(Components[index].GetAbsolutePath() + location.File, text);
+                            File.WriteAllText(tempPath + location.File, text);
                         }
                     }
                 }
