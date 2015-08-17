@@ -11,6 +11,7 @@ namespace projectgen.Projects
     {
         public string file;
         public string wildcard;
+        public bool inFileName;
     }
     class FieldJSON
     {
@@ -84,7 +85,7 @@ namespace projectgen.Projects
                     ReplacementRules.Add(field.name, new ReplacementRule(this));
                     foreach (ReplaceJSON replace in field.replace)
                     {
-                        ReplacementRules[field.name].ReplacementLocations.Add(new ReplacementLocation(replace.file, replace.wildcard));
+                        ReplacementRules[field.name].ReplacementLocations.Add(new ReplacementLocation(replace.file, replace.wildcard, replace.inFileName));
                     }
                 }
             }

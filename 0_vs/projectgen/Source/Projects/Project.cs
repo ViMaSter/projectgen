@@ -110,15 +110,23 @@ namespace projectgen.Projects
                 {
                     foreach (ReplacementLocation location in rule.ReplacementLocations)
                     {
-                        if (!new FileInfo(string.Format("{0}{1}/{2}", targetLocation, Components[index].FolderName, location.File)).Exists)
+                        if (location.InFileName)
                         {
-                            Console.WriteLine("Invalid replace-instruction!");
+                            string filename = tempPath + location.File;
+                            File.Move(filename, filename.Replace(location.Wildcard, rule.ReplaceWith));
                         }
                         else
                         {
-                            string text = File.ReadAllText(tempPath + location.File);
-                            text = text.Replace(location.Wildcard, rule.ReplaceWith);
-                            File.WriteAllText(tempPath + location.File, text);
+                            if (!new FileInfo(string.Format("{0}{1}/{2}", targetLocation, Components[index].FolderName, location.File)).Exists)
+                            {
+                                Console.WriteLine("Invalid replace-instruction!");
+                            }
+                            else
+                            {
+                                string text = File.ReadAllText(tempPath + location.File);
+                                text = text.Replace(location.Wildcard, rule.ReplaceWith);
+                                File.WriteAllText(tempPath + location.File, text);
+                            }
                         }
                     }
                 }

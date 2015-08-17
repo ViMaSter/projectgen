@@ -19,10 +19,17 @@ namespace projectgen.Projects
         /// </summary>
         public string Wildcard;
 
-        public ReplacementLocation(string file, string wildcard)
+        /// <summary>
+        /// Whether or not the wildcard is located in the filename
+        /// or the files content
+        /// </summary>
+        public bool InFileName;
+
+        public ReplacementLocation(string file, string wildcard, bool inFileName)
         {
             File = file;
             Wildcard = wildcard;
+            InFileName = inFileName;
         }
     }
 
